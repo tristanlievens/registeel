@@ -1,3 +1,9 @@
+import { Action } from 'redux'
+
+export interface LoadTeamAction extends Action {
+  pokemon: any[]
+}
+
 export const loadTeam = (content: string[]): {} => (
   {
     type: 'LOAD_TEAM',

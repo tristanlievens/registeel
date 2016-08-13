@@ -1,4 +1,13 @@
-export const loadLocation = (content: string[]): {} => (
+import { Action } from 'redux'
+
+export interface LocationAction extends Action {
+  map: string
+  posX: number
+  posY: number
+  isSurfing?: boolean
+}
+
+export const loadLocation = (content: string[]): LocationAction => (
   {
     type: 'LOAD_LOCATION',
     map: content[0],
@@ -8,7 +17,7 @@ export const loadLocation = (content: string[]): {} => (
   }
 )
 
-export const syncLocation = (content: string[]): {} => {
+export const syncLocation = (content: string[]): LocationAction | Action => {
   if(content.length === 0 || content[0].length === 0 ) return { type: 'NO_ACTION' }
   return {
     type: 'LOAD_LOCATION',

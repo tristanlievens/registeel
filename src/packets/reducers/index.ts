@@ -1,10 +1,14 @@
-import { Action, Reducer } from 'redux'
+import { Action, Reducer, combineReducers } from 'redux'
+import { State, LocationState } from '../../../index.d.ts'
+import { LocationAction, MoveAction } from '../actions'
+import * as _ from 'lodash'
 
-const reducers:Reducer<State> = (state: State, action: Action) => {
-  switch(action.type) {
-    default:
-      return state
-  }
-}
+import location from './location'
+import pokemonTeam from './pokemonTeam'
+
+const reducers = combineReducers<State>({
+  location,
+  pokemonTeam,
+})
 
 export default reducers

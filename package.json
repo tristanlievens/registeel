@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/index.js",
     "build": "rm -rf dist && tsc",
     "prepublish": "typings install && npm run build"
   },

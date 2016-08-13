@@ -1,5 +1,5 @@
 import { Store, Action } from 'redux'
-import { loadBattle, updateBattleActions, loadTeam, loadLocation, loadTime, loadInventory, syncLocation } from './actions'
+import { loadBattle, updateBattleActions, loadTeam, loadLocation, loadTime, loadInventory, syncLocation, handleChat } from './actions'
 
 const packetHandler = (packet: string, store:Store<any>, isReceiving: boolean) => {
   const action = <Action>getAction(packet, isReceiving)
@@ -10,7 +10,7 @@ const packetHandler = (packet: string, store:Store<any>, isReceiving: boolean) =
 export default packetHandler
 
 const getAction = (packet: string, isReceiving: boolean):{} => {
-  if (isReceiving && packet.startsWith('U')) return { type: 'NO_ACTION' } // just updating location of other player
+  if (isReceiving && /^U/.test(packet)) return { type: 'NO_ACTION' } // just updating location of other player
 
   let [packetType, ...rawPacketContent] = packet.split('|.|')
   if (isReceiving) {
@@ -22,12 +22,14 @@ const getAction = (packet: string, isReceiving: boolean):{} => {
       case 'S': return syncLocation(rawPacketContent[0].split('|'))
       case "!": return loadBattle(rawPacketContent[0].split('|'))
       case "a": return updateBattleActions(rawPacketContent[0].split('|'))
-      case 'w': return { type: 'NO_ACTION' } // chat message
+      case 'w': return handleChat(rawPacketContent[0]) // chat message
       case 'C': return { type: 'NO_ACTION' } // loading channels
       case 'i': return { type: 'NO_ACTION' } // loading information about the player
       case '@': return { type: 'NO_ACTION' } // Load npc battlers
       case '*': return { type: 'NO_ACTION' } // Destory npcs
       case 'k': return { type: 'NO_ACTION' } // Map loading k|.|Seafoam B1F,m0,41,55,54,86,42,|
+      case ')': return { type: 'NO_ACTION' } // Updating queue )|.|2|1|
+      case '%': return { type: 'NO_ACTION' } // Updating transport mode: %|.|1| = surf, %|.|0| = walking %|.|2| = bike?
       case 'f': return { type: 'NO_ACTION' } // not identified
       case '[': return { type: 'NO_ACTION' } // not identified
       case 'y': return { type: 'NO_ACTION' } // not identified

@@ -6,7 +6,7 @@ const PROTOCOL = decoders.PROTOCOL
 
 const packetSniffer = (store) => {
   let c = new Cap()
-  let device = Cap.findDevice(process.env.HOME)
+  let device = Cap.findDevice(process.env.HOME_IP)
   let filter = 'port 800 and tcp'
 
   let bufSize = 10 * 1024 * 1024
@@ -15,6 +15,7 @@ const packetSniffer = (store) => {
   let linkType = c.open(device, filter, bufSize, buffer)
 
   c.setMinBytes && c.setMinBytes(0)
+  console.log("Listening for packets.")
   c.on('packet', (nbytes, trunc) => {
     if (linkType !== 'ETHERNET') return console.log('Unsupported linktype: ' + linkType)
     let ethernetRet = decoders.Ethernet(buffer)
@@ -39,7 +40,7 @@ const packetSniffer = (store) => {
 
     let actions = decryptedMessage.split('.\\\r\n')
     actions.pop()
-    actions.forEach((action) => packetHandler(action, store, process.env.HOME === ipv4Ret.info.dstaddr))
+    actions.forEach((action) => packetHandler(action, store, process.env.HOME_IP === ipv4Ret.info.dstaddr))
   })
 }
 

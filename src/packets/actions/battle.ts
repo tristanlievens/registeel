@@ -89,9 +89,9 @@ const handleDamage = (props: string[], action: updateBattleAction): updateBattle
     status: props[6],
   }
   if (props[1] === 'Enemy') {
-    Object.assign({}, action.oppPokemon, stats)
+    (Object as any).assign({}, action.oppPokemon, stats)
   } else {  // props[1] === Playername
-    Object.assign({}, action.ownPokemon, stats)
+    (Object as any).assign({}, action.ownPokemon, stats)
   }
   return action
 }
