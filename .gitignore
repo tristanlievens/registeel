@@ -1,0 +1,7 @@
+typings/globals
+typings/modules
+typings/index.d.ts
+.vscode
+dist
+.env
+node_modules
