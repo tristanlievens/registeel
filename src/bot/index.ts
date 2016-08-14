@@ -1,3 +1,4 @@
+import { State } from '../stateDeclarations'
 
 const act = (state: State) => {
 

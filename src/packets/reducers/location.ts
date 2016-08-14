@@ -1,6 +1,8 @@
 import { Action, Reducer } from 'redux'
-import { LocationAction, MoveAction } from '../actions'
 import * as _ from 'lodash'
+import { LocationAction, MoveAction } from '../actions'
+import { LocationState } from '../../stateDeclarations'
+
 
 const initialLocation: LocationState = {
   posX: 0,

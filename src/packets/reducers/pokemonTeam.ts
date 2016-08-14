@@ -1,6 +1,8 @@
 import { Action, Reducer } from 'redux'
-import { LoadTeamAction, UpdateBattleAction} from '../actions'
 import * as _ from 'lodash'
+import { LoadTeamAction, UpdateBattleAction} from '../actions'
+import { PokemonTeamState, Pokemon, PokemonMove } from '../../stateDeclarations'
+
 
 const initialState: PokemonTeamState = []
 

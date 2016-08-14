@@ -1,6 +1,7 @@
 import { Action, Reducer } from 'redux'
-import { LoadBattleAction, UpdateBattleAction } from '../actions'
 import * as _ from 'lodash'
+import { LoadBattleAction, UpdateBattleAction } from '../actions'
+import { BattleState, OppPokemonProperties } from '../../stateDeclarations'
 
 const initialState: BattleState = {
   isBattling: false,

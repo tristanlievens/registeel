@@ -1,5 +1,6 @@
 import { Action } from 'redux'
 import * as _ from 'lodash'
+import { OppPokemonProperties } from '../../stateDeclarations'
 
 export interface LoadBattleAction extends Action {
   oppTrainerName: string

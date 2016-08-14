@@ -1,4 +1,6 @@
-interface OppPokemonProperties {
+import { Pokemon as DatabasePokemon } from 'unown'
+
+export interface OppPokemonProperties {
   id: number
   level: number
   maxHealth: number
@@ -11,14 +13,14 @@ interface OppPokemonProperties {
   isWild?: boolean
 }
 
-interface BattleState {
+export interface BattleState {
   isBattling: boolean
   oppPokemonCount?: number
   oppPokemon?: OppPokemonProperties
   selectedPokemonIndex?: number
 }
 
-interface LocationState {
+export interface LocationState {
   posX: number
   posY: number
   map: string
@@ -26,13 +28,13 @@ interface LocationState {
   isBiking: boolean
 }
 
-interface PokemonMove {
+export interface PokemonMove {
   id: number
   maxPp: number
   currentPp: number 
 }
 
-interface PokemonStats {
+export interface PokemonStats {
   attack: number
   defence: number
   speed: number
@@ -40,7 +42,7 @@ interface PokemonStats {
   specialDefense: number
 }
 
-interface Pokemon {
+export interface Pokemon {
   uid: number
   id: number
   maxHealth: number
@@ -71,6 +73,13 @@ interface Pokemon {
 
 type PokemonTeamState = Pokemon[]
 
-interface State {
+export interface StatusState {
+  isAfk: boolean
+}
+
+export interface State {
   location: LocationState
+  battle: BattleState
+  pokemonTeam: PokemonTeamState
+  status: StatusState
 }

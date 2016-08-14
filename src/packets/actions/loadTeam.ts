@@ -1,10 +1,11 @@
 import { Action } from 'redux'
+import { Pokemon, PokemonStats } from '../../stateDeclarations'
 
 export interface LoadTeamAction extends Action {
-  pokemon: any[]
+  pokemon: Pokemon[]
 }
 
-export const loadTeam = (content: string[]): {} => (
+export const loadTeam = (content: string[]): LoadTeamAction => (
   {
     type: 'LOAD_TEAM',
     pokemon: content.map(rawPokemon => loadPokemon(rawPokemon.split('|'))),
