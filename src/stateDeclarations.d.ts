@@ -31,7 +31,8 @@ export interface LocationState {
 export interface PokemonMove {
   id: number
   maxPp: number
-  currentPp: number 
+  currentPp: number
+  index: number
 }
 
 export interface PokemonStats {
@@ -75,6 +76,7 @@ type PokemonTeamState = Pokemon[]
 
 export interface StatusState {
   isAfk: boolean
+  isWaiting: boolean // is the bot waiting for a new action
 }
 
 export interface State {

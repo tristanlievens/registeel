@@ -19,10 +19,10 @@ const loadPokemon = (props: string[]): Pokemon => (
     maxHealth: parseInt(props[5]),
     currentHealth: parseInt(props[6]),
     moves: [
-      { id: parseInt(props[7]), maxPp: parseInt(props[11]), currentPp: parseInt(props[15]) },
-      { id: parseInt(props[8]), maxPp: parseInt(props[12]), currentPp: parseInt(props[16]) },
-      { id: parseInt(props[9]), maxPp: parseInt(props[13]), currentPp: parseInt(props[17]) },
-      { id: parseInt(props[10]), maxPp: parseInt(props[14]), currentPp: parseInt(props[18]) },
+      { id: parseInt(props[7]), maxPp: parseInt(props[11]), currentPp: parseInt(props[15]), index: 0 },
+      { id: parseInt(props[8]), maxPp: parseInt(props[12]), currentPp: parseInt(props[16]), index: 1 },
+      { id: parseInt(props[9]), maxPp: parseInt(props[13]), currentPp: parseInt(props[17]), index: 2 },
+      { id: parseInt(props[10]), maxPp: parseInt(props[14]), currentPp: parseInt(props[18]), index: 3 },
     ],
     experience: {
       currentLevel: parseInt(props[3]),
