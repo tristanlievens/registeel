@@ -5,3 +5,4 @@ typings/index.d.ts
 dist
 .env
 node_modules
+*.log

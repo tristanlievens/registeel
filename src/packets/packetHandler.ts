@@ -29,7 +29,8 @@ const getAction = (packet: string, isReceiving: boolean):{} => {
       case '*': return { type: 'NO_ACTION' } // Destory npcs
       case 'k': return { type: 'NO_ACTION' } // Map loading k|.|Seafoam B1F,m0,41,55,54,86,42,|
       case ')': return { type: 'NO_ACTION' } // Updating queue )|.|2|1|
-      case '%': return { type: 'NO_ACTION' } // Updating transport mode: %|.|1| = surf, %|.|0| = walking %|.|2| = bike?
+      case '%': return { type: 'UPDATE_SURFING', isSurfing: /^1/.test(rawPacketContent[0]) }
+      case '$': return { type: 'UPDATE_BIKING', isBiking: /^1/.test(rawPacketContent[0]) }
       case 'f': return { type: 'NO_ACTION' } // not identified
       case '[': return { type: 'NO_ACTION' } // not identified
       case 'y': return { type: 'NO_ACTION' } // not identified

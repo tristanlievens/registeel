@@ -1,22 +1,14 @@
 require('dotenv').config()
+import { createStore, compose, StoreEnhancer } from 'redux'
+import * as devTools from 'remote-redux-devtools'
 
 import act from './bot'
 import packetSniffer from './packets'
 import reducers from './packets/reducers'
-import { createStore, compose, StoreEnhancer } from 'redux'
-import { State } from '../index.d.ts'
 
 const theArguments = process.argv.slice(2)
-console.log('Call arguments:',theArguments)
 
-let store = createStore<State>(reducers)
+let store = createStore<State>(reducers, <StoreEnhancer<State>>devTools({realtime: true, maxAge: 200}))
 
 packetSniffer(store)
 store.subscribe(() => act(store.getState()))
-const looper = () => {
-  setTimeout(() => {
-    console.log('State:', store.getState())
-    looper()
-  }, 5000)
-}
-looper()

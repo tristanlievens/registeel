@@ -4,6 +4,6 @@
     "module": "commonjs",
     "outDir": "./dist"
   },
-  "compileOnSave" : false,
-  "filesGlob" : ["**/*.ts","**/*.tsx","!node_modules/**"]
+  "compileOnSave" : true,
+  "filesGlob" : ["src/**/*.ts", "!node_modules/**"]
 }

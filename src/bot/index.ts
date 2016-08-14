@@ -1,4 +1,3 @@
-import { State } from '../../index.d.ts'
 
 const act = (state: State) => {
 

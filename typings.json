@@ -4,6 +4,7 @@
     "lodash": "registry:npm/lodash#4.0.0+20160723033700"
   },
   "globalDependencies": {
-    "node": "registry:env/node#6.0.0+20160723033700"
+    "node": "registry:env/node#6.0.0+20160723033700",
+    "remote-redux-devtools": "registry:dt/remote-redux-devtools#0.3.2+20160521151832"
   }
 }

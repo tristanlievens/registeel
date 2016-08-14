@@ -11,7 +11,7 @@ export const loadTeam = (content: string[]): {} => (
   }
 )
 
-const loadPokemon = (props: string[]): {} => (
+const loadPokemon = (props: string[]): Pokemon => (
   {
     uid: parseInt(props[0]), // id in the party
     id: parseInt(props[1]),
@@ -42,11 +42,12 @@ const loadPokemon = (props: string[]): {} => (
       stats: loadStats(props.slice(23, 28).map(stat => parseInt(stat))),
       iv: loadStats(props.slice(30, 35).map(stat => parseInt(stat))),
       ev: loadStats(props.slice(41, 46).map(stat => parseInt(stat))),
-    }
+    },
+    content: props,
   }
 )
 
-const loadStats = (statsArray: number[]):{} => (
+const loadStats = (statsArray: number[]): PokemonStats => (
   {
     attack: statsArray[0],
     defence: statsArray[1],

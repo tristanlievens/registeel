@@ -1,120 +1,120 @@
-interface pokemonProperties {
-  id: number
-  level: number
-  maxHealth: number
-  currentHealth?: number
-  status: string
-  gender: string
-  isAlreadyCaught: boolean
-  alternateForm: string
-  isShiny?: boolean
-  isWild?: boolean
-}
+import { Action } from 'redux'
+import * as _ from 'lodash'
 
-interface loadBattleAction {
-  type: string
+export interface LoadBattleAction extends Action {
   oppTrainerName: string
   oppPokemonCount: number
-  opponentPokemon: pokemonProperties
+  oppPokemon: OppPokemonProperties
   selectedPokemonIndex: number
+  content?: string[]
 }
 
-export const loadBattle = (content: string[]): loadBattleAction => (
+// Not sure about status and isWild
+export const loadBattle = (content: string[]): LoadBattleAction => (
   {
     type: 'LOAD_BATTLE',
     oppTrainerName: content[6],
     oppPokemonCount: content[8].length === 0 ? 1 : parseInt(content[8]),
-    opponentPokemon: {
+    oppPokemon: {
       id: parseInt(content[0]),
-      level: parseInt(content[1]),
-      maxHealth: parseInt(content[2]),
-      status: content[9],
-      gender: content[10],
+      maxHealth: parseInt(content[1]),
+      currentHealth: parseInt(content[1]),
+      level: parseInt(content[2]),
+      status: content[10],
+      gender: content[9],
       isAlreadyCaught: content[11] === "1",
       alternateForm: content[12],
       isShiny: content[5] === "1",
       isWild: content[6].length === 0 && content[8].length === 0,
     },
-    selectedPokemonIndex: parseInt(content[3]) - 1, // 0 to 3
+    selectedPokemonIndex: parseInt(content[3]) - 1,
+    content: content
   }
 )
 
-interface battleStats {
+interface UpdatedStats {
   status: string
+  currentHealth: number
+  maxHealth: number
 }
 
-interface updateBattleAction {
-  type: string,
-  oppPokemon: battleStats,
-  ownPokemon: battleStats,
-  pp: {},
-  isFinished: boolean,
-  selectedPokemonIndex?: number,
-  opponentPokemon?: pokemonProperties,
+export interface UpdateBattleAction extends Action {
+  newOppPokemon?: OppPokemonProperties
+  newOppStats: UpdatedStats
+  newOwnStats: UpdatedStats
+  pp: number[]
+  isFinished: boolean
+  selectedPokemonIndex: number,
+  content: string[]
 }
 
-export const updateBattleActions = (content: string[]): updateBattleAction => {
+export const updateBattleActions = (content: string[]): UpdateBattleAction => {
   const battleMessages = content[4].split('\r\n')
-  return battleMessages.reduce((action, message) => {
-    if (message === 'E-B') {
-      action.isFinished = true
-      return action
+  const initialUpdateBattleAction =
+    <UpdateBattleAction>{
+      type: 'UPDATE_BATTLE',
+      newOppStats: {},
+      newOwnStats: {},
+      pp: {},
+      isFinished: false,
+      content: content
     }
-    let props = message.split(':')
-    switch (props[0]) {
-      case 'D':
-        return handleDamage(props, action)
-      case 'S':
-        return handleStatus(props, action)
-      case 'P':
-        return handlePp(props, action)
-      case 'C':
-        return handleSwitch(props, action)
-    }
-    return action
-  },
-  <updateBattleAction>{
-    type: 'LOAD_BATTLE_ACTIONS',
-    oppPokemon: {},
-    ownPokemon: {},
-    pp: {},
-    isFinished: false,
-  })
+  return battleMessages.reduce(updateActionWithMessage, initialUpdateBattleAction)
 }
 
-const handleDamage = (props: string[], action: updateBattleAction): updateBattleAction => {
-  let stats = {
+const updateActionWithMessage = (action: UpdateBattleAction, message: string) => {
+  if (message === 'E-B') {
+    action.isFinished = true
+    return action
+  }
+  let props = message.split(':')
+  switch (props[0]) {
+    case 'D':
+      return handleDamage(props, action)
+    case 'S':
+      return handleStatus(props, action)
+    case 'P':
+      return handlePp(props, action)
+    case 'C':
+      return handleSwitch(props, action)
+  }
+  return action
+}
+
+const handleDamage = (props: string[], action: UpdateBattleAction): UpdateBattleAction => {
+  let stats: UpdatedStats = {
     currentHealth: parseInt(props[2]),
     maxHealth: parseInt(props[3]),
     status: props[6],
   }
-  if (props[1] === 'Enemy') {
-    (Object as any).assign({}, action.oppPokemon, stats)
+  if (props[1] === 'Enemy' || props[1] === '') {
+    action.newOppStats = _.assign<{}, UpdatedStats>({}, action.newOppStats, stats)
   } else {  // props[1] === Playername
-    (Object as any).assign({}, action.ownPokemon, stats)
+    action.newOwnStats = _.assign<{}, UpdatedStats>({}, action.newOwnStats, stats)
   }
   return action
 }
 
-const handleStatus = (props: string[], action: updateBattleAction): updateBattleAction => {
+const handleStatus = (props: string[], action: UpdateBattleAction): UpdateBattleAction => {
   if (props[1] === 'Enemy') {
-    action.oppPokemon.status = props[2]
+    action.newOppStats.status = props[2]
   } else { // props[1] === Playername
-    action.ownPokemon.status = props[2]
+    action.newOwnStats.status = props[2]
   }
   return action
 }
 
-const handlePp = (props: string[], action: updateBattleAction): updateBattleAction => {
+const handlePp = (props: string[], action: UpdateBattleAction): UpdateBattleAction => {
   if (props[2] === "0") return action
-  action.pp[parseInt(props[2])] = props.slice(3,7).map(pp => parseInt(pp))
+  action.selectedPokemonIndex = parseInt(props[2]) - 1
+  action.pp = props.slice(3, 7).map(pp => parseInt(pp))
   return action
 }
 
-const handleSwitch = (props: string[], action: updateBattleAction): updateBattleAction => {
+const handleSwitch = (props: string[], action: UpdateBattleAction): UpdateBattleAction => {
   console.log("Switcharoo", props)
   if (props[1] === "Enemy") { // Enemy changes pokemon
-    action.opponentPokemon = {
+    action.newOppPokemon = {
       id: parseInt(props[2]),
       level: parseInt(props[3]),
       maxHealth: parseInt(props[5]),
