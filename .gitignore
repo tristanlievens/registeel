@@ -3,6 +3,7 @@ typings/modules
 typings/index.d.ts
 .vscode
 dist
+localStorage
 .env
 node_modules
 *.log
