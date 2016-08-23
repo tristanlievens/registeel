@@ -1,16 +1,17 @@
 import { Store } from 'redux'
-import { State } from '../stateDeclarations'
+import { State, LocationState } from '../stateDeclarations'
 import handleBattle from './handleBattle'
+import { followPath, move, surf } from './moves'
+import * as Robot from 'robotjs'
+import * as async from 'async'
 
-const act = (store: Store<State>): void => {
-  if (!store.getState().status.isWaiting) return 
-  const next = () => store.dispatch({ type: 'TOGGLE_WAITING', isWaiting: true })
-  store.dispatch({ type: 'TOGGLE_WAITING', isWaiting: false })
-  handleState(store.getState(), next)
+const act = (store: Store<State>, done): void => {
+  async.until(() => false, next => {
+    async.series([
+      resolve => move(5, 'left', store, resolve),
+      resolve => move(5, 'right', store, resolve),
+    ], next)
+  }, done)
 }
 
 export default act
-
-const handleState = (state: State, next): void => {
-  if (state.battle.isBattling) return handleBattle(state, next)
-}

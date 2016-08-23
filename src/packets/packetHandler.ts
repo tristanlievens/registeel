@@ -47,8 +47,8 @@ const getAction = (packet: string, isReceiving: boolean):{} => {
       case '_': return { type: 'NO_ACTION' } // not identified
     }
   }
-  console.log(isReceiving ? 'Receiving' : 'Sending')
-  console.log(packet)
-  console.log('============')
+  // console.log(isReceiving ? 'Receiving' : 'Sending')
+  // console.log(packet)
+  // console.log('============')
   return { type: 'NO_ACTION' }
 }

@@ -7,6 +7,7 @@ const PROTOCOL = decoders.PROTOCOL
 const packetSniffer = (store) => {
   let c = new Cap()
   let device = Cap.findDevice(process.env.HOME_IP)
+  // let device = 'en0'
   let filter = 'port 800 and tcp'
 
   let bufSize = 10 * 1024 * 1024
