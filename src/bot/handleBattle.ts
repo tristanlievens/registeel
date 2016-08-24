@@ -46,3 +46,11 @@ const executeRun = (done) => {
   robot.keyTap('4')
   setTimeout(done, 3000)
 }
+
+const switchPokemon = (newPokemonIndex: number, done) => {
+  robot.keyTap('2')
+  setTimeout(() => {
+    robot.keyTap((newPokemonIndex + 1).toString())
+    setTimeout(done, 5000)
+  })
+}

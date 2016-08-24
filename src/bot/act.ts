@@ -1,17 +1,16 @@
 import { Store } from 'redux'
 import { State, LocationState } from '../stateDeclarations'
 import handleBattle from './handleBattle'
-import { followPath, move, surf } from './moves'
+import { followPath, move, mapTransition, Move } from './moves'
+import { usePokeCenter } from './utils'
 import * as Robot from 'robotjs'
-import * as async from 'async'
 
 const act = (store: Store<State>, done): void => {
-  async.until(() => false, next => {
-    async.series([
-      resolve => move(5, 'left', store, resolve),
-      resolve => move(5, 'right', store, resolve),
-    ], next)
-  }, done)
+  Promise.resolve(null)
+    .then(() => move({ steps: 1, direction: 'up' }, store))
+    .then(() => mapTransition('Pokecenter Cinnabar', store))
+    .then(() => usePokeCenter(store, { map: "Pokecenter Cinnabar" }))
+    .then(done)
 }
 
 export default act

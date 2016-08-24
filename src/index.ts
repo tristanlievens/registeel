@@ -4,7 +4,9 @@ import * as devTools from 'remote-redux-devtools'
 import { persistStore, autoRehydrate, storages } from 'redux-persist'
 import * as Robot from 'robotjs'
 
-import act from './bot/act'
+// import act from './bot/act'
+import { act } from './bot/scripts/trainSpAtt'
+import './monkeypatches'
 import packetSniffer from './packets/packetSniffer'
 import reducers from './packets/reducers'
 import { AsyncNodeStorage } from 'redux-persist-node-storage'
@@ -32,12 +34,10 @@ if (!theArguments[0]) {
   Promise.resolve(null)
   // .then(() => waiter(3))
   // .then(() => waiter(2))
-  // .then(() => waiter(1))
+  .then(() => waiter(1))
   .then(() => waiter(0))
-  .then(() => act(store, () => {
-    console.log('done')
-    process.exit()
-  }))
+  .then(() => act(store))
+  .then(() => process.exit())
   // Robot.keyTap('tab', 'command')
   // act(store, () => {
   //   console.log('done')
