@@ -7,12 +7,12 @@ const initialState: BattleState = {
   isBattling: false,
 }
 
-const battle: Reducer<BattleState> = (state: BattleState = initialState, action: Action): BattleState => {
+const battle: Reducer<BattleState> = (state: BattleState = initialState, action: LoadBattleAction | UpdateBattleAction): BattleState => {
   switch (action.type) {
     case 'LOAD_BATTLE':
       return _.assign<{}, BattleState>(
         { isBattling: true },
-        _.pick(action as LoadBattleAction, 'oppPokemonCount', 'oppPokemon', 'selectedPokemonIndex')
+        _.pick(action, 'oppPokemonCount', 'oppPokemon', 'selectedPokemonIndex')
       )
     case 'UPDATE_BATTLE':
       if ((action as UpdateBattleAction).isFinished) return { isBattling: false }
@@ -21,7 +21,7 @@ const battle: Reducer<BattleState> = (state: BattleState = initialState, action:
           oppPokemon: _.assign<{}, OppPokemonProperties>(
             {},
             state.oppPokemon,
-            (action as UpdateBattleAction).newOppPokemon
+            action.newOppPokemon
           ),
         }
       )

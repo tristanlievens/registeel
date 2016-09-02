@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import { OppPokemonProperties } from '../../stateDeclarations'
 
 export interface LoadBattleAction extends Action {
+  type: 'LOAD_BATTLE'
   oppTrainerName: string
   oppPokemonCount: number
   oppPokemon: OppPokemonProperties
@@ -40,6 +41,7 @@ interface UpdatedStats {
 }
 
 export interface UpdateBattleAction extends Action {
+  type: 'UPDATE_BATTLE'
   newOppPokemon?: OppPokemonProperties
   newOppStats: UpdatedStats
   newOwnStats: UpdatedStats
