@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux'
-var loginActions = require('../actions/login')
+import * as loginActions from '../actions/login'
 
 export const handleLoggedIn = (dispatch: Dispatch<any>): void => {
-  loginActions.loggedIn(dispatch)
+  dispatch(loginActions.loggedIn())
 }
 
 /**
@@ -11,6 +11,6 @@ export const handleLoggedIn = (dispatch: Dispatch<any>): void => {
  */
 export const handleLoginError = (rawPacket: string, dispatch: Dispatch<any>) => {
   const reason: 'username' | 'password' = rawPacket.indexOf('1') === -1 ? 'password' : 'username'
-  loginActions.loginError(reason, dispatch)
+  dispatch(loginActions.loginError(reason))
 }
 ``

@@ -5,7 +5,7 @@ import { Client } from '../typings'
 
 const login = (client: Client) => (
   new Promise((resolve, reject) => {
-    fireLogin(process.env.USERNAME, process.env.PASSWORD, client)
+    client.store.dispatch(<any>fireLogin(process.env.USERNAME, process.env.PASSWORD, client.connection))
     until(
       () => !client.store.getState().login.isLoggingIn,
       next => setTimeout(() => {
