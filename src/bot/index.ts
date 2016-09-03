@@ -5,7 +5,7 @@ import { Client } from '../typings'
 
 const login = (client: Client) => (
   new Promise((resolve, reject) => {
-    client.store.dispatch(<any>fireLogin(process.env.USERNAME, process.env.PASSWORD, client.connection))
+    client.store.dispatch(<any>fireLogin(process.env.PRO_USERNAME, process.env.PRO_PASSWORD, client.connection))
     until(
       () => !client.store.getState().login.isLoggingIn,
       next => setTimeout(() => {
@@ -31,5 +31,3 @@ export const startBot = (client: Client) => {
       console.log('Successfully logged in!')
     })
 }
-
-
