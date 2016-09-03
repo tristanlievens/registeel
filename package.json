@@ -9,7 +9,8 @@
     "watch": "tsc --watch",
     "prepublish": "typings install && npm run build",
     "test": "mocha dist/**/*.spec.js --timeout 5000",
-    "watch-test": "mocha dist/**/*.spec.js  -w --timeout 5000"
+    "watch-test": "mocha dist/**/*.spec.js  -w --timeout 5000",
+    "sniff": "node sniffer.js"
   },
   "repository": {
     "type": "git",
