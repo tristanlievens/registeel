@@ -9,8 +9,8 @@ const login = (client: Client) => (
     until(
       () => !client.store.getState().login.isLoggingIn,
       next => setTimeout(() => {
-        if (client.store.getState().login.queuePosition) {
-          console.log("Queue position:", client.store.getState().login.queuePosition)
+        if (client.store.getState().login.position) {
+          console.log("Queue position:", client.store.getState().login.position)
         }
         next()
       }, 500),

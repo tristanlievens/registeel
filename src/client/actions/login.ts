@@ -27,9 +27,20 @@ export interface LoginErrorAction {
 }
 
 export const loginError = (reason: 'password' | 'username'): LoginErrorAction => {
-  console.log
   return {
     type: 'LOGIN_ERROR',
     reason,
+  }
+}
+
+export interface QueuePositionUpdateAction {
+  type: 'QUEUE_POSITION_UPDATE'
+  position: number
+}
+
+export const updateQueue = (position: number): QueuePositionUpdateAction => {
+  return {
+    type: 'QUEUE_POSITION_UPDATE',
+    position
   }
 }

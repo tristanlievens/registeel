@@ -1,6 +1,6 @@
 import { loginReducer } from './login'
 import { expect } from 'chai'
-
+import * as loginActions from '../actions/login'
 
 const initialState = loginReducer(undefined, { type: "INIT" })
 describe('#loginReducer', () => {
@@ -21,6 +21,14 @@ describe('#loginReducer', () => {
       isLoggedIn: false,
       isLoggingIn: false,
       loginErrorReason: 'password'
+    })
+  })
+
+  it('should update queue position', () => {
+    const updatingQueuePosition: loginActions.QueuePositionUpdateAction = {type: 'QUEUE_POSITION_UPDATE', position: 108} 
+    const updatedQueueState = loginReducer(undefined, updatingQueuePosition)
+    expect(updatedQueueState).to.include({
+      position: 108
     })
   })
 })
