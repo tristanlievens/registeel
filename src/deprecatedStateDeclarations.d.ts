@@ -15,6 +15,7 @@ export interface OppPokemonProperties {
 
 export interface BattleState {
   isBattling: boolean
+
   oppPokemonCount?: number
   oppPokemon?: OppPokemonProperties
   selectedPokemonIndex?: number

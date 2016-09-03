@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "sourceMap": true
   },
   "compileOnSave" : true,
   "filesGlob" : ["src/**/*.ts", "!node_modules/**"]

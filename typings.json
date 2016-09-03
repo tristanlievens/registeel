@@ -2,10 +2,18 @@
   "name": "bots",
   "dependencies": {
     "async": "registry:npm/async#2.0.1+20160815105832",
-    "lodash": "registry:npm/lodash#4.0.0+20160723033700"
+    "chai": "registry:npm/chai#3.5.0+20160723033700",
+    "extend": "registry:npm/extend#1.0.0+20160723033700",
+    "lodash": "registry:npm/lodash#4.0.0+20160723033700",
+    "redux-persist": "registry:npm/redux-persist#3.2.2+20160817092816"
   },
   "globalDependencies": {
+    "es6-promise": "registry:dt/es6-promise#0.0.0+20160614011821",
+    "mocha": "registry:dt/mocha#2.2.5+20160720003353",
     "node": "registry:env/node#6.0.0+20160723033700",
     "remote-redux-devtools": "registry:dt/remote-redux-devtools#0.3.2+20160521151832"
+  },
+  "globalDevDependencies": {
+    "redux-mock-store": "registry:dt/redux-mock-store#0.0.6+20160514173414"
   }
 }
