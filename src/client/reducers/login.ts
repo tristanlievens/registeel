@@ -1,11 +1,11 @@
 import { Reducer } from 'redux'
 import { assign } from 'lodash'
-import { LoggingInAction, LoggedInAction, LoginErrorAction } from '../actions/login'
+import { LoggingInAction, LoggedInAction, LoginErrorAction, QueuePositionUpdateAction } from '../actions/login'
 
 export interface LoginState {
   isLoggingIn: boolean
   isLoggedIn: boolean
-  queuePosition?: number
+  position?: number
   loginErrorReason?: 'password' | 'username'
 }
 
@@ -14,7 +14,7 @@ const initialState: LoginState = {
   isLoggedIn: false,
 }
 
-type LoginAction = LoggingInAction | LoggedInAction | LoginErrorAction
+type LoginAction = LoggingInAction | LoggedInAction | LoginErrorAction | QueuePositionUpdateAction
 
 export const loginReducer: Reducer<LoginState> = (state: LoginState = initialState, action: LoginAction) => {
   switch (action.type) {
@@ -23,6 +23,7 @@ export const loginReducer: Reducer<LoginState> = (state: LoginState = initialSta
     case 'LOGIN_ERROR': return assign<{}, LoginState>({}, state,
       { isLoggingIn: false, loginErrorReason:  action.reason},
     )
+    case 'QUEUE_POSITION_UPDATE': return assign<{}, LoginState>({}, state, {position: action.position})
     default: return state
   }
 }
