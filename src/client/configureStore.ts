@@ -1,7 +1,6 @@
 import { createStore, compose, StoreEnhancer, Reducer, Store } from 'redux'
 import * as devTools from 'remote-redux-devtools'
 import { persistStore, autoRehydrate, storages } from 'redux-persist'
-import { AsyncNodeStorage } from 'redux-persist-node-storage'
 
 import { rootReducer, State } from './reducers'
 

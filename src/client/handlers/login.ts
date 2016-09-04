@@ -13,4 +13,3 @@ export const handleLoginError = (rawPacket: string, dispatch: Dispatch<any>) => 
   const reason: 'username' | 'password' = rawPacket.indexOf('1') === -1 ? 'password' : 'username'
   dispatch(loginActions.loginError(reason))
 }
-``

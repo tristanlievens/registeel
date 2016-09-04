@@ -27,7 +27,6 @@ export interface LoginErrorAction {
 }
 
 export const loginError = (reason: 'password' | 'username'): LoginErrorAction => {
-  console.log
   return {
     type: 'LOGIN_ERROR',
     reason,
