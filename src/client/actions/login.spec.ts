@@ -4,8 +4,6 @@ import { Socket } from 'net'
 const encryption = td.replace('../utils/encryption')
 import { fireLogin, updateQueue, LoggingInAction } from './login'
 import { VERSION, HASH } from '../utils/constants'
-import configureMockStore from 'redux-mock-store';
-const mockStore = configureMockStore()
 
 describe('LoginActions', () => {
   after(() => td.reset())

@@ -1,7 +1,6 @@
 import { Client } from '../../typings'
 import { Socket } from 'net'
 import { send } from '../utils/encryption'
-import { Dispatch } from 'redux'
 import { VERSION, HASH } from '../utils/constants'
 
 export interface LoggingInAction {
