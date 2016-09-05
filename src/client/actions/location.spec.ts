@@ -13,4 +13,11 @@ describe('LocationActions', () => {
       expect(locationActions.handleLoadLocation('Koala Kingdom|1|2|1|0|')).to.deep.equal(expectedAction)
     })
   })
+
+  describe('#fireMove', () => {
+    it('should return a proper moved action', () => {
+      const action: locationActions.MoveAction = { type: 'MOVE', direction: 'up' }
+      expect(locationActions.fireMove('up')).to.deep.equal(action)
+    })
+  })
 })

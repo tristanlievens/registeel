@@ -1,6 +1,6 @@
 import { until } from 'async'
-
 import { login as loginApi } from '../client/api/login'
+import { move as moveApi } from '../client/api/location'
 import { Client } from '../typings'
 
 const handleQueueUpdates = (client: Client) => (
@@ -20,7 +20,8 @@ const handleQueueUpdates = (client: Client) => (
           reject(`Login failed: incorrect ${client.store.getState().login.loginErrorReason}`)
         }
       },
-  )})
+    )
+  })
 )
 
 const login = (client: Client) => (
@@ -28,7 +29,15 @@ const login = (client: Client) => (
     .then(() => handleQueueUpdates(client))
 )
 
+const move = (client: Client) => (
+  moveApi('left', client)
+  .then(() => moveApi('left', client))
+  .then(() => moveApi('left', client))
+  .then(() => moveApi('left', client))
+)
+
 export const startBot = (client: Client) => {
   login(client)
+    // .then(() => move(client))
     .then(() => console.log('Successfully logged in!'))
 }
