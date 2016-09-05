@@ -1,6 +1,7 @@
 import * as locationActions from './actions/location'
 import * as loginActions from './actions/login'
 import { decrypt } from './utils/encryption'
+import { handleUpdateTeam } from './actions/team'
 
 import { Store, Dispatch } from 'redux'
 
@@ -22,7 +23,7 @@ export const handlePacket = (packet: string, dispatch: Dispatch<any>): void => {
     case 'q': dispatch(locationActions.handleLoadLocation(rawPacketContent[0])); break
     case 'E': return // loadTime(rawPacketContent[0].split('|'))
     case 'd': return // loadInventory(rawPacketContent)
-    case '#': return // loadTeam(rawPacketContent[0].split('\r\n'))
+    case '#': dispatch(handleUpdateTeam(rawPacketContent[0])); break
     case 'S': return // syncLocation(rawPacketContent[0].split('|'))
     case "!": return // loadBattle(rawPacketContent[0].split('|'))
     case "a": return // updateBattleActions(rawPacketContent[0].split('|'))
