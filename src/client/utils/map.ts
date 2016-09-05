@@ -12,6 +12,7 @@ export const openMapConnection = () => {
   return new Promise<Socket>(resolve => {
     const connection = new Socket()
     connection.on('data', (binary) => parseMapBinary(binary, connection)) // get mapname from binary
+    connection.on('end', () => console.log('Map connection ended'))
     connection.connect(PORT, HOST, () => resolve(connection))
   })
 }
@@ -26,34 +27,37 @@ const downloadMap = (mapName: string, mapConnection: Socket) => {
   })
 }
 
+let memorizedBuffer = new Buffer('')
+
 export const parseMapBinary = (binary: Buffer, connection: Socket) => {
-  const header = binary.slice(0, 4)
-  const content = binary.slice(4)
+  memorizedBuffer = Buffer.concat([memorizedBuffer, binary])
+  if (binary.length % 1448 === 0) return // full buffer, map not yet finished
+  const header = memorizedBuffer.slice(0, 4)
+  const content = memorizedBuffer.slice(4)
+  memorizedBuffer = new Buffer('')
   const type = String.fromCharCode(content.readInt8(0))
   if (type !== 'm') return
   const mapNameLength = content.readInt8(1)
   const mapName = content.slice(2, 2 + mapNameLength).toString()
-  console.log(mapName)
   const map = content.slice(2 + mapNameLength)
   zlib.gunzip(map, (err, buffer: Buffer) => {
     if (buffer.readInt16LE(0) !== 2) return
     const height = buffer.readInt32LE(2)
     const width = buffer.readInt32LE(10)
-    console.log('height', height, 'width', width)
     let colliders: number[][] = []
     let bufferPosition = 18
     for (let y = 0; y < height; y++) {
       let row = []
       for (let x = 0; x < width; x++) {
         row.push(buffer.readUInt16LE(bufferPosition))
+        if (buffer.readUInt16LE(bufferPosition) !== 1 && buffer.readUInt16LE(bufferPosition) !== 0) console.log(x, y, buffer.readUInt16LE(bufferPosition))
         bufferPosition += 2
       }
       colliders.push(row)
     }
-    console.log('colliders', colliders)
-    connection.emit(mapName.replace('.pm',''), colliders)
+    connection.emit(mapName.replace('.pm', ''), colliders)
   })
-} // TODO: parse map binary
+}
 
 
 export const map = memoize(downloadMap)
