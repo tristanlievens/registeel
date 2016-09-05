@@ -17,11 +17,15 @@ const initialState: LocationState = {
   isBiking: false
 }
 
-type LocationAction = any
+type LocationAction = locationActions.LoadLocationAction
 
 export const locationReducer: Reducer<LocationState> = (state: LocationState = initialState, action: LocationAction) => {
   switch (action.type) {
-    case 'LOAD_LOCATION': return state
+    case 'LOAD_LOCATION': return assign<{}, LocationState>({}, state, {
+      position: action.position,
+      map: action.map,
+      isSurfing: action.isSurfing
+     })
     default: return state
   }
 }

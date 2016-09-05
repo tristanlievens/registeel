@@ -1,26 +1,21 @@
 import { locationReducer } from './location'
+import * as locationActions from '../actions/location'
 import { expect } from 'chai'
 
-
-const initialState = locationReducer(undefined, { type: "INIT" })
-describe('#loginReducer', () => {
-  it('should handle successful login happypath', () => {
-    const loggingInState = locationReducer(undefined, { type: 'LOGGING_IN' })
-    const loggedInState = locationReducer(loggingInState, { type: 'LOGGED_IN' })
-    expect(loggingInState).to.include({ isLoggedIn: false, isLoggingIn: true })
-    expect(loggedInState).to.include({ isLoggedIn: true, isLoggingIn: false })
-  })
-
-  it('should handle login error', () => {
-    const loggingInState = locationReducer(undefined, { type: 'LOGGING_IN' })
-    const loginErrorState = locationReducer(loggingInState, {
-      type: 'LOGIN_ERROR',
-      reason: 'password',
-    })
-    expect(loginErrorState).to.include({
-      isLoggedIn: false,
-      isLoggingIn: false,
-      loginErrorReason: 'password'
+describe('#locationReducer', () => {
+  it('should load initial state login error', () => {
+    const position: [number, number] = [1,2]
+    const action: locationActions.LoadLocationAction = {
+      type: 'LOAD_LOCATION',
+      position,
+      map: 'Koala Kingdom',
+      isSurfing: false
+    }
+    const loadedState = locationReducer(undefined, action)
+    expect(loadedState).to.include({
+      position,
+      map: 'Koala Kingdom',
+      isSurfing: false
     })
   })
 })
