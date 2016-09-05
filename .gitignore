@@ -7,3 +7,4 @@ localStorage
 .env
 node_modules
 *.log
+src/debug.ts

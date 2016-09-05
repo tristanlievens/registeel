@@ -8,8 +8,9 @@
     "build": "rm -rf dist && tsc",
     "watch": "tsc --watch",
     "prepublish": "typings install && npm run build",
-    "test": "npm run build && mocha dist/**/*.spec.js --timeout 5000",
-    "watch-test": "npm run build && mocha dist/**/*.spec.js  -w --timeout 5000",
+    "test": "npm run build && mocha dist/**/*.spec.js --timeout 5000 --require source-map-support/register",
+    "watch-test": "npm run build && mocha dist/**/*.spec.js  -w --timeout 5000 --require source-map-support/register",
+    "debug": "nodemon --require source-map-support/register dist/debug.js",
     "sniff": "node sniffer.js"
   },
   "repository": {
@@ -31,6 +32,7 @@
     "mocha": "^3.0.2",
     "redux-mock-store": "^1.1.4",
     "remote-redux-devtools": "^0.4.2",
+    "source-map-support": "^0.4.2",
     "testdouble": "^1.6.1",
     "typescript": "^2.0.0",
     "typings": "^1.3.2"
