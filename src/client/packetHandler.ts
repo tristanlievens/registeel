@@ -1,6 +1,6 @@
-import { handleLoggedIn, handleLoginError, handleUpdateQueue } from './login'
-import * as locationActions from '../actions/location'
-import { decrypt } from '../utils/encryption'
+import * as locationActions from './actions/location'
+import * as loginActions from './actions/login'
+import { decrypt } from './utils/encryption'
 
 import { Store, Dispatch } from 'redux'
 
@@ -16,9 +16,9 @@ export const handlePacket = (packet: string, dispatch: Dispatch<any>): void => {
   console.log(packet)
   let [packetType, ...rawPacketContent] = packet.split('|.|')
   switch (packetType) {
-    case '5': handleLoggedIn(dispatch); break
-    case '6': handleLoginError(rawPacketContent[0], dispatch); break
-    case ')': handleUpdateQueue(rawPacketContent[0], dispatch); break
+    case '5': dispatch(loginActions.handleLoggedIn()); break
+    case '6': dispatch(loginActions.handleLoginError(rawPacketContent[0])); break
+    case ')': dispatch(loginActions.handleUpdateQueue(rawPacketContent[0])); break
     case 'q': dispatch(locationActions.handleLoadLocation(rawPacketContent[0])); break
     case 'E': return // loadTime(rawPacketContent[0].split('|'))
     case 'd': return // loadInventory(rawPacketContent)

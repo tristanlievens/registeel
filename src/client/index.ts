@@ -2,7 +2,7 @@ import { Socket } from 'net'
 
 import configureStore from './configureStore'
 import { Client } from '../typings'
-import handleData from './handlers'
+import handleData from './packetHandler'
 
 const RED_SERVER = '46.28.203.224'
 const HOST = RED_SERVER

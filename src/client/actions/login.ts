@@ -18,14 +18,19 @@ export interface LoggedInAction {
   type: 'LOGGED_IN'
 }
 
-export const loggedIn = (): LoggedInAction => ({ type: 'LOGGED_IN' })
+export const handleLoggedIn = (): LoggedInAction => ({ type: 'LOGGED_IN' })
 
 export interface LoginErrorAction {
   type: 'LOGIN_ERROR'
   reason: 'password' | 'username'
 }
 
-export const loginError = (reason: 'password' | 'username'): LoginErrorAction => {
+export const handleLoginError = (rawPacket: string): LoginErrorAction => {
+  let reason
+  switch(rawPacket.split('|')[0]) {
+    case '1': reason = 'username'; break
+    case '2': reason = 'password'; break
+  }
   return {
     type: 'LOGIN_ERROR',
     reason,
@@ -37,9 +42,9 @@ export interface QueuePositionUpdateAction {
   position: number
 }
 
-export const updateQueue = (position: number): QueuePositionUpdateAction => {
+export const handleUpdateQueue = (rawPacket: string): QueuePositionUpdateAction => {
   return {
     type: 'QUEUE_POSITION_UPDATE',
-    position
+    position: parseInt(/^(\d+)\|.*$/.exec(rawPacket)[1])
   }
 }
