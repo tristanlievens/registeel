@@ -1,2 +1,2 @@
 declare module 'testdouble'
-declare module 'factory-girl'
+declare module 'redux-mock-store'

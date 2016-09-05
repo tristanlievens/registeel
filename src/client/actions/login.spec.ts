@@ -1,19 +1,11 @@
 import { expect } from 'chai'
-import * as td from 'testdouble'
-import { Socket } from 'net'
-import { VERSION, HASH } from '../utils/constants'
-
-const encryption = td.replace('../utils/encryption')
 import * as loginActions from './login'
 
 describe('LoginActions', () => {
-  after(() => td.reset())
   describe('#fireLogin', () => {
     it('should send the proper message', () => {
-      const connection = td.object(Socket)
       const expectedAction: loginActions.LoggingInAction = { type: 'LOGGING_IN' }
-      expect(loginActions.fireLogin('theUsername', 'thePassword', connection)).to.deep.equal(expectedAction)
-      td.verify(encryption.send(`+|.|theUsername|.|thePassword|.|${VERSION}|.|${HASH}|`, connection))
+      expect(loginActions.fireLoggingIn()).to.deep.equal(expectedAction)
     })
   })
 
