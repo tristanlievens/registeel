@@ -18,3 +18,22 @@ PRO_PASSWORD=thePassword
 
 ## Collaboration
 if using linux you may need to run `sudo apt-get install libpcap0.8-dev` if you're getting a build error
+
+## MVP checklist
+
+- [ ] location (pelle wip)
+  - [x] design location state 
+  - [ ] handle location syncs
+- [ ] pokemon team (hector wip)
+  - [ ] design team state 
+  - [ ] handle initial load 
+  - [ ] handle updates to team (eg. during battle)
+- [ ] battle  
+  - [ ] design state 
+  - [ ] handle updates
+- [ ] inventory 
+  - [ ] state 
+  - [ ] load (and updates?)
+- [ ] Bot
+  - [ ] moving 
+  - [ ] battle
