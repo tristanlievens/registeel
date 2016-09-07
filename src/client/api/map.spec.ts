@@ -3,7 +3,7 @@ import { Socket } from 'net'
 import { expect } from 'chai'
 import * as fs from 'fs'
 import * as  path from 'path'
-import { parseMapBinary } from './map'
+import { parseMapBinary, Map } from './map'
 
 describe('MapUtils', () => {
   describe('#parseMapBinary', () => {
@@ -11,8 +11,15 @@ describe('MapUtils', () => {
       let connection = new Socket()
       let buf = fs.readFileSync(path.join(process.cwd(), 'fixtures', 'ViridianHouse'))
       parseMapBinary(buf, connection)
-      connection.on('Viridian City House 1', map => {
-        expect(map).to.deep.equal(veridianHouseColliders)
+      connection.on('Viridian City House 1', (map: Map) => {
+        expect(map.colliders).to.deep.equal(veridianHouseColliders)
+        expect(map.weather).to.eq('None')
+        expect(map.isOutside).to.be.false
+        expect(map.links[0]).to.deep.equal({
+          destinationMap: 'Viridian City',
+          position: [4, 9],
+          destinationPosition: [48, 28]
+        })
         done()
       })
     })
@@ -23,8 +30,8 @@ describe('MapUtils', () => {
       const secondPacket = fs.readFileSync(path.join(process.cwd(), 'fixtures', 'ViridianPoke1'))
       parseMapBinary(firstPacket, connection)
       parseMapBinary(secondPacket, connection)
-      connection.on('Pokecenter Viridian', map => {
-        expect(map).to.deep.equal(pokecenterColliders)
+      connection.on('Pokecenter Viridian', (map: Map) => {
+        expect(map.colliders).to.deep.equal(pokecenterColliders)
         done()
       })
     })

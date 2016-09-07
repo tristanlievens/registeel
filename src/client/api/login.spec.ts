@@ -1,21 +1,23 @@
+// import chai = require('chai')
+// chai.use(require('chai-as-promised'))
+// const expect = chai.expect
+import { expect } from 'chai'
 import * as td from 'testdouble'
-import { Socket } from 'net'
-import mockConfigureStore from 'redux-mock-store'
 import { VERSION, HASH } from '../utils/constants'
 import { State } from '../reducers'
+import { configureMockClient } from '../testHelpers/factories'
 
-
-const encryption = td.replace('../utils/encryption')
-const configureStore = mockConfigureStore()
+const { send } = td.replace('../utils/encryption')
 import { login } from './login'
 describe('loginApi', () => {
-  after(td.reset)
   describe('#login', () => {
-    it('should send proper login script', () => {
-      const connection = td.object(Socket)
-      const store = configureStore()
-      login('theUsername', 'thePassword', { connection, store })
-      td.verify(encryption.send(`+|.|theUsername|.|thePassword|.|${VERSION}|.|${HASH}|`, connection))
+    it.only('should send proper login script', done => {
+      const client = configureMockClient()
+      let promise = login('theUsername', 'thePassword', client)
+      promise.then(() => {
+        td.verify(send(`+|.|theUsername|.|thePassword|.|${VERSION}|.|${HASH}|`, client.connection))
+        done()
+      })
     })
   })
 })

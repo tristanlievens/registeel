@@ -23,7 +23,7 @@ describe('#locationReducer', () => {
   it('should handle move', () => {
     const action: locationActions.MoveAction = {
       type: 'MOVE',
-      direction: 'up'
+      position: [10,9]
     }
     const initialState = locationReducer(undefined, { type: 'INIT' })
     const positionedState = assign<{}, LocationState>({}, initialState, { position: [10, 10] })

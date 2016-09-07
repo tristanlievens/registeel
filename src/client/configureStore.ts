@@ -4,14 +4,12 @@ import { persistStore, autoRehydrate, storages } from 'redux-persist'
 
 import { rootReducer, State } from './reducers'
 
-const configureStore = (): Store<State> => {
-  const enhancers = compose(
-    // <StoreEnhancer<State>>autoRehydrate(),
-    <StoreEnhancer<State>>devTools({ realtime: true, maxAge: 200 })
-  )
-
-  let store = createStore<State>(rootReducer, undefined, enhancers)
-  // persistStore(store, { storage: new AsyncNodeStorage('./localStorage') })
+const configureStore = (initialState?): Store<State> => {
+  let enhancers = compose()
+  if (process.env.NODE_ENV == 'development') {
+    enhancers = compose(<StoreEnhancer<State>>devTools({ realtime: true, maxAge: 200 }))
+  }
+  const store = createStore<State>(rootReducer, initialState, enhancers)
   return store
 }
 

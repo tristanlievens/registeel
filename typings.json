@@ -3,6 +3,7 @@
   "dependencies": {
     "async": "registry:npm/async#2.0.1+20160815105832",
     "chai": "registry:npm/chai#3.5.0+20160723033700",
+    "chai-as-promised": "registry:npm/chai-as-promised#5.1.0+20160310030142",
     "extend": "registry:npm/extend#1.0.0+20160723033700",
     "lodash": "registry:npm/lodash#4.0.0+20160723033700",
     "redux-persist": "registry:npm/redux-persist#3.2.2+20160817092816"

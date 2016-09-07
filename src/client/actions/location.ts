@@ -1,18 +1,17 @@
 export type direction = 'up' | 'down' | 'left' | 'right'
+export type position = [number, number]
 
 export interface MoveAction {
   type: 'MOVE'
-  direction: direction
+  position: position
 }
 
-export const fireMove = (direction: direction): MoveAction => {
+export const fireMove = (position: position): MoveAction => {
   return {
     type: 'MOVE',
-    direction
+    position
   }
 }
-
-export type position = [number, number]
 
 export interface LoadLocationAction {
   type: 'LOAD_LOCATION'

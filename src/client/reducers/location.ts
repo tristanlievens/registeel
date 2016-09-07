@@ -26,17 +26,7 @@ export const locationReducer: Reducer<LocationState> = (state = initialState, ac
       map: action.map,
       isSurfing: action.isSurfing
     })
-    case 'MOVE': return assign<{}, LocationState>({}, state, { position: calculateNewPosition(state.position, action.direction) })
+    case 'MOVE': return assign<{}, LocationState>({}, state, { position: action.position })
     default: return state
-  }
-}
-
-const calculateNewPosition = (oldPosition: locationActions.position, direction: locationActions.direction)
-  : locationActions.position => {
-  switch (direction) {
-    case 'up': return [oldPosition[0], oldPosition[1] - 1]
-    case 'down': return [oldPosition[0], oldPosition[1] + 1]
-    case 'left': return [oldPosition[0], oldPosition[1] - 1]
-    case 'right': return [oldPosition[0], oldPosition[1] + 1]
   }
 }

@@ -5,9 +5,13 @@ import { LocationState, locationReducer as location } from './location'
 export interface State {
   login: LoginState
   location: LocationState
+  lastAction: Action
 }
+
+const lastAction = (state: Action = { type: 'INIT' }, action: Action) => action
 
 export const rootReducer = combineReducers<State>({
   login,
-  location
+  location,
+  lastAction: (state: Action = { type: 'INIT' }, action: Action) => action
 })
