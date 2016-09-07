@@ -8,11 +8,5 @@ export const login = (username: string, password: string, client: Client) => {
     send(`+|.|${username}|.|${password}|.|${VERSION}|.|${HASH}|`, client.connection)
     client.store.dispatch(fireLoggingIn())
     resolve()
-    // const unsub = client.store.subscribe(() => {
-    //   if (client.store.getState().lastAction.type == 'LOAD_LOCATION') {
-    //     unsub()
-    //     resolve()
-    //   }
-    // })
   })
 }

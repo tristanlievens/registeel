@@ -1,16 +1,15 @@
 import { until } from 'async'
 import { login as loginApi } from '../client/api/login'
-import { move as moveApi } from '../client/api/location'
 import { Client } from '../typings'
+import { move } from './move'
+import { waitOnAction } from '../client/utils'
 
 const handleQueueUpdates = (client: Client) => (
   new Promise((resolve, reject) => {
     until(
       () => !client.store.getState().login.isLoggingIn,
       next => setTimeout(() => {
-        if (client.store.getState().login.position) {
-          console.log("Queue position:", client.store.getState().login.position)
-        }
+        if (client.store.getState().login.position) console.log("Queue position:", client.store.getState().login.position)
         next()
       }, 500),
       () => {
@@ -29,15 +28,10 @@ const login = (client: Client) => (
     .then(() => handleQueueUpdates(client))
 )
 
-const move = (client: Client) => (
-  moveApi('left', client)
-  .then(() => moveApi('left', client))
-  .then(() => moveApi('left', client))
-  .then(() => moveApi('left', client))
-)
-
 export const startBot = (client: Client) => {
   login(client)
-    // .then(() => move(client))
     .then(() => console.log('Successfully logged in!'))
+    .then(() => waitOnAction('LOAD_LOCATION', client))
+    .then(() => console.log('map loaded, starting to move'))
+    .then(() => move(['down', 'left', 'left'], client))
 }
