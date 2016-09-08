@@ -44,6 +44,7 @@ export const parseMapBinary = (binary: Buffer, connection: Socket): void => {
   const mapName = contentReader.nextString(mapNameLength)
   const mapBuffer = contentReader.restAll()
   zlib.gunzip(mapBuffer, (err, buffer: Buffer) => {
+    console.log("Unzipped buffer length", buffer.length)
     connection.emit(mapName.replace('.pm', ''), parseMapContent(buffer, mapName))
   })
 }

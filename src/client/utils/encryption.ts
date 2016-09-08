@@ -8,5 +8,5 @@ export const decrypt = (message: string): string => {
 export const encrypt = decrypt
 
 export const send = (message: string, connection: Socket) => {
-  connection.write(encrypt(message + '.\\\r\n'))
+  connection.write(encrypt(message + '|.\\\r\n'))
 }

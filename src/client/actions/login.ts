@@ -24,6 +24,7 @@ export const handleLoginError = (rawPacket: string): LoginErrorAction => {
   switch(rawPacket.split('|')[0]) {
     case '1': reason = 'username'; break
     case '2': reason = 'password'; break
+    case '3': reason = 'already loggedin'
   }
   return {
     type: 'LOGIN_ERROR',

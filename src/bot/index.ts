@@ -1,7 +1,7 @@
 import { until } from 'async'
 import { login as loginApi } from '../client/api/login'
 import { Client } from '../typings'
-import { move } from './move'
+import { move, moveTo } from './move'
 import { waitOnAction } from '../client/utils'
 
 const handleQueueUpdates = (client: Client) => (
@@ -28,10 +28,30 @@ const login = (client: Client) => (
     .then(() => handleQueueUpdates(client))
 )
 
+export const waitForMapLoaded = (mapName: string, client: Client) => (
+  new Promise(resolve => {
+    if (client.store.getState().location.map === mapName) resolve()
+    console.log("waiting for map to load", mapName)
+    waitOnAction('LOAD_LOCATION', client).then(resolve)
+  })
+)
+
 export const startBot = (client: Client) => {
-  login(client)
-    .then(() => console.log('Successfully logged in!'))
-    .then(() => waitOnAction('LOAD_LOCATION', client))
-    .then(() => console.log('map loaded, starting to move'))
-    .then(() => move(['down', 'left', 'left'], client))
+  return login(client)
+    // .then(() => console.log('Successfully logged in!'))
+    // .then(() => console.log('map loaded, starting to move'))
+    // .then(() => moveTo("Viridian City", client))
+    // .then(() => waitForMapLoaded("Viridian City", client))
+    // .then(() => moveTo("Pokecenter Viridian", client))
+    // .then(() => waitForMapLoaded("Pokecenter Viridian", client))
+    .then(() => moveTo([9, 16], client)) // nurse joy
+    .then(() => process.exit())
+    .catch((error) => {
+      console.log("bot errored", error)
+      process.exit()
+    })
+}
+
+export const onlyLogin = (client: Client) => {
+  return login(client)
 }

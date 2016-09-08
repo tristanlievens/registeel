@@ -13,7 +13,7 @@ export const move = (direction: locationActions.direction, client: Client): Prom
     .then(() => getMap(client.store.getState().location.map, client.mapConnection))
     .then(map => new Promise<void>((resolve, reject) => {
       const location = client.store.getState().location
-      if (!canMove(direction, location, map)) reject('Not valid movement')
+      if (!canMove(direction, location, map)) reject(`Not valid movement: ${direction} from ${location.position}`)
       execMove(direction, client)
       const destinationPosition = getDestinationPosition(direction, location, map)
       client.store.dispatch(locationActions.fireMove(destinationPosition))
@@ -29,10 +29,19 @@ export const move = (direction: locationActions.direction, client: Client): Prom
  */
 const canMove = (direction: locationActions.direction, location: LocationState, map: Map) => {
   const destinationPos = calculateNewPosition(location.position, direction)
-  if (!insideBounds(destinationPos, map)) return false
+  if (!insideBounds(destinationPos, map)) {
+    console.log('not inside bounds')
+    return false
+  }
   const destinationCollider = getCollider(destinationPos, map)
-  if (_.includes([1, 11, 13], destinationCollider)) return false
-  if (!location.isSurfing && 5 == destinationCollider) return false
+  if (_.includes([1, 11, 13], destinationCollider)) {
+    console.log("Obstacle:", destinationCollider, destinationPos)
+    return false
+  }
+  if (!location.isSurfing && 5 == destinationCollider) {
+    console.log("Not surfing")
+    return false
+  }
   return true
 }
 
@@ -41,7 +50,7 @@ const getDestinationPosition = (direction: locationActions.direction, location: 
   const destinationCollider = getCollider(tempDestinationPos, map)
   if (getCollider(tempDestinationPos, map) == 2) {
     if (direction === 'down') return calculateNewPosition(tempDestinationPos, 'down')
-    throw new Error('This is not a vlid move.')
+    throw new Error('This is not a valid move.')
   }
   return tempDestinationPos
 }
@@ -57,8 +66,8 @@ const calculateNewPosition = (oldPosition: locationActions.position, direction: 
   switch (direction) {
     case 'up': return [oldPosition[0], oldPosition[1] - 1]
     case 'down': return [oldPosition[0], oldPosition[1] + 1]
-    case 'left': return [oldPosition[0], oldPosition[1] - 1]
-    case 'right': return [oldPosition[0], oldPosition[1] + 1]
+    case 'left': return [oldPosition[0] - 1, oldPosition[1]]
+    case 'right': return [oldPosition[0] + 1, oldPosition[1]]
   }
 }
 
@@ -71,5 +80,5 @@ const execMove = (direction: locationActions.direction, client: Client) => {
     case 'left': directionChar = 'l'; break
     case 'right': directionChar = 'r'; break
   }
-  send(`#|.|${directionChar}|`, client.connection)
+  send(`#|.|${directionChar}`, client.connection)
 }

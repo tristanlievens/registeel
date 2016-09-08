@@ -32,7 +32,7 @@ var packetSniffer = function () {
     var decryptedMessage = _.map(message, function (c, i) { return String.fromCharCode(c.charCodeAt(0) ^ 1); }) // XOR cipher by 1
       .join('');
     var isSending = _.includes(['46.28.203.224','46.28.207.53','46.28.205.63'], ipv4Ret.info.dstaddr)
-    if (isSending) console.log(isSending ? 'Sending' : 'Receiving', decryptedMessage);
+    if (!_.includes(['U', 'w'], decryptedMessage[0])) console.log(isSending ? 'Sending' : 'Receiving', decryptedMessage);
     // console.log('nbytes', nbytes, 'trunc', trunc)
     // console.log(ipv4Ret.info.dstaddr, ipv4Ret.info.dstaddr === '95.183.48.126' ? message : message.length);
     // console.log(buffer.toJSON())
