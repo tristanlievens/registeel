@@ -6,7 +6,7 @@ import * as locationActions from '../actions/location'
  * Location position is not set if the user is not logged in.
  */
 export interface LocationState {
-  position?: [number, number]
+  position?: locationActions.position
   map?: string
   isSurfing: boolean
   isBiking: boolean
@@ -17,15 +17,16 @@ const initialState: LocationState = {
   isBiking: false
 }
 
-type LocationAction = locationActions.LoadLocationAction
+type LocationAction = locationActions.LoadLocationAction | locationActions.MoveAction
 
-export const locationReducer: Reducer<LocationState> = (state: LocationState = initialState, action: LocationAction) => {
+export const locationReducer: Reducer<LocationState> = (state = initialState, action: LocationAction) => {
   switch (action.type) {
     case 'LOAD_LOCATION': return assign<{}, LocationState>({}, state, {
       position: action.position,
       map: action.map,
       isSurfing: action.isSurfing
-     })
+    })
+    case 'MOVE': return assign<{}, LocationState>({}, state, { position: action.position })
     default: return state
   }
 }

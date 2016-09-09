@@ -1,29 +1,33 @@
 import * as locationActions from './actions/location'
 import * as loginActions from './actions/login'
-import { decrypt } from './utils/encryption'
 import { handleUpdateTeam } from './actions/team'
+import { decrypt, send } from './utils/encryption'
 
 import { Store, Dispatch } from 'redux'
+import { Client } from '../typings'
 
-const handleData = (encryptedData: string, dispatch: Dispatch<any>): void => {
+const handleData = (encryptedData: string, client: Client): void => {
   decrypt(encryptedData)
     .split('.\\\r\n')
-    .forEach(packet => handlePacket(packet, dispatch))
+    .filter(packet => packet.length > 0)
+    .forEach(packet => handlePacket(packet, client))
 }
 
 export default handleData
 
-export const handlePacket = (packet: string, dispatch: Dispatch<any>): void => {
-  console.log(packet)
+export const handlePacket = (packet: string, client: Client): void => {
+  if(packet[0] === 'U') return
   let [packetType, ...rawPacketContent] = packet.split('|.|')
   switch (packetType) {
-    case '5': dispatch(loginActions.handleLoggedIn()); break
-    case '6': dispatch(loginActions.handleLoginError(rawPacketContent[0])); break
-    case ')': dispatch(loginActions.handleUpdateQueue(rawPacketContent[0])); break
-    case 'q': dispatch(locationActions.handleLoadLocation(rawPacketContent[0])); break
+    case '5': handleLoggedIn(rawPacketContent[0], client); break
+    case '6': client.store.dispatch(loginActions.handleLoginError(rawPacketContent[0])); break
+    case ')': client.store.dispatch(loginActions.handleUpdateQueue(rawPacketContent[0])); break
+    case 'q': handleLoadLocation(rawPacketContent[0], client); break
+    case '.': send('_', client.connection); break // ProcessCommands
+    case "'": send("'", client.connection); break // ProcessCommands
     case 'E': return // loadTime(rawPacketContent[0].split('|'))
     case 'd': return // loadInventory(rawPacketContent)
-    case '#': dispatch(handleUpdateTeam(rawPacketContent[0])); break
+    case '#': client.store.dispatch(handleUpdateTeam(rawPacketContent[0])); break
     case 'S': return // syncLocation(rawPacketContent[0].split('|'))
     case "!": return // loadBattle(rawPacketContent[0].split('|'))
     case "a": return // updateBattleActions(rawPacketContent[0].split('|'))
@@ -39,5 +43,21 @@ export const handlePacket = (packet: string, dispatch: Dispatch<any>): void => {
     case '[': return // { type: 'NO_ACTION' } // not identified
     case 'y': return // { type: 'NO_ACTION' } // not identified
     case '(': return // { type: 'NO_ACTION' } // not identified
+    // default: console.log('Unhandled', packet)
   }
+}
+
+const handleLoadLocation = (rawPacket: string, client: Client) => {
+  const action = locationActions.handleLoadLocation(rawPacket)
+  send(`k|.|${action.map.toLowerCase()}`, client.connection)
+  send('S', client.connection)
+  client.store.dispatch(locationActions.handleLoadLocation(rawPacket))
+}
+
+
+const handleLoggedIn = (rawPacket: string, client: Client) => {
+  send(')', client.connection)
+  send('_', client.connection)
+  send('g', client.connection)
+  client.store.dispatch(loginActions.handleLoggedIn())
 }

@@ -21,9 +21,9 @@ if using linux you may need to run `sudo apt-get install libpcap0.8-dev` if you'
 
 ## MVP checklist
 
-- [ ] location (pelle wip)
+- [x] location
   - [x] design location state 
-  - [ ] handle location syncs
+  - [x] handle location syncs
 - [ ] pokemon team (hector wip)
   - [ ] design team state 
   - [ ] handle initial load 
@@ -35,5 +35,11 @@ if using linux you may need to run `sudo apt-get install libpcap0.8-dev` if you'
   - [ ] state 
   - [ ] load (and updates?)
 - [ ] Bot
-  - [ ] moving 
+  - [ ] moving
+    - [x] basic commands
+    - [ ] add logic to read map to calculate possible movement
   - [ ] battle
+- [ ] Map parsing
+ - [x] basic map colliders parsing
+ - [x] multipacket maps parsing
+ - [ ] other prop parsing (doors, ice, etc) 

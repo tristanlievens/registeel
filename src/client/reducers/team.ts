@@ -51,6 +51,7 @@ const initialState: TeamState = []
 
 export const teamReducer: Reducer<TeamState> = (state: TeamState = initialState, action: UpdateTeamAction) => {
   switch (action.type) {
+    case 'UPDATE_TEAM': return action.pokemon
     default: return state
   }
 }

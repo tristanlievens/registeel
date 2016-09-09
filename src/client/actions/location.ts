@@ -1,7 +1,22 @@
+export type direction = 'up' | 'down' | 'left' | 'right'
+export type position = [number, number]
+
+export interface MoveAction {
+  type: 'MOVE'
+  position: position
+}
+
+export const fireMove = (position: position): MoveAction => {
+  return {
+    type: 'MOVE',
+    position
+  }
+}
+
 export interface LoadLocationAction {
-  type: 'LOAD_LOCATION',
-  position: [number, number],
-  map: string,
+  type: 'LOAD_LOCATION'
+  position: position
+  map: string
   isSurfing: boolean
 }
 
