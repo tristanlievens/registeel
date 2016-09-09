@@ -55,7 +55,7 @@ interface Link {
   destinationMap: string
 }
 
-interface Npc {
+export interface Npc {
   name: string
   position: [number, number]
   losLength: number

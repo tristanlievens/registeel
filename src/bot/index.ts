@@ -1,5 +1,6 @@
 import { until } from 'async'
 import { login as loginApi } from '../client/api/login'
+import { interact } from './interact'
 import { Client } from '../typings'
 import { move, moveTo } from './move'
 import { waitOnAction } from '../client/utils'
@@ -38,13 +39,14 @@ export const waitForMapLoaded = (mapName: string, client: Client) => (
 
 export const startBot = (client: Client) => {
   return login(client)
-    // .then(() => console.log('Successfully logged in!'))
+    .then(() => console.log('Successfully logged in!'))
     // .then(() => console.log('map loaded, starting to move'))
-    // .then(() => moveTo("Viridian City", client))
     // .then(() => waitForMapLoaded("Viridian City", client))
-    // .then(() => moveTo("Pokecenter Viridian", client))
-    // .then(() => waitForMapLoaded("Pokecenter Viridian", client))
+    .then(() => moveTo("Pokecenter Viridian", client))
+    .then(() => waitForMapLoaded("Pokecenter Viridian", client))
     .then(() => moveTo([9, 16], client)) // nurse joy
+    .then(() => interact([9, 15], [1], client))
+    // .then(() => moveTo("Viridian City", client))
     .then(() => process.exit())
     .catch((error) => {
       console.log("bot errored", error)

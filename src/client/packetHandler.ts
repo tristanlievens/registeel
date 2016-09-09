@@ -1,5 +1,6 @@
 import * as locationActions from './actions/location'
 import * as loginActions from './actions/login'
+import { handleUpdateScript } from './actions/lastScript'
 import { decrypt, send } from './utils/encryption'
 
 import { Store, Dispatch } from 'redux'
@@ -24,6 +25,7 @@ export const handlePacket = (packet: string, client: Client): void => {
     case 'q': handleLoadLocation(rawPacketContent[0], client); break
     case '.': send('_', client.connection); break // ProcessCommands
     case "'": send("'", client.connection); break // ProcessCommands
+    case 'R': client.store.dispatch(handleUpdateScript(rawPacketContent)); break
     case 'E': return // loadTime(rawPacketContent[0].split('|'))
     case 'd': return // loadInventory(rawPacketContent)
     case '#': return // loadTeam(rawPacketContent[0].split('\r\n'))

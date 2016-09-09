@@ -1,7 +1,7 @@
 import * as async from 'async'
 import { Client } from '../typings'
 import { getMap, Map } from '../client/api/map'
-import { move as moveApi } from '../client/api/location'
+import { move as moveApi } from '../client/api/move'
 import { LocationState } from '../client/reducers/location'
 import { direction } from '../client'
 import * as _ from 'lodash'
@@ -15,7 +15,7 @@ export const move = (moves: direction[], client: Client) => {
 }
 
 const wait = (timeout?: number) => (
-  new Promise<void>(resolve => setTimeout(resolve, timeout | Math.floor(Math.random() * 1000) + 750))
+  new Promise<void>(resolve => setTimeout(resolve, timeout | Math.floor(Math.random() * 750) + 500))
 )
 
 export const moveTo = (rawTarget: string | [number, number], client: Client) => {
@@ -26,11 +26,11 @@ export const moveTo = (rawTarget: string | [number, number], client: Client) => 
 
   if (typeof rawTarget === 'string') {
     getTarget = (map => {
-        const link = _.find(map.links, link => link.destinationMap === rawTarget) ||
-          _.find(map.links, link => link.destinationMap === 'Link')
-        if (!link) throw new Error(`${rawTarget} has no link with the current map ${map.mapName}.\nAvailable links: ${JSON.stringify(map.links)}`)
-        return link.position
-      })
+      const link = _.find(map.links, link => link.destinationMap === rawTarget) ||
+        _.find(map.links, link => link.destinationMap === 'Link')
+      if (!link) throw new Error(`${rawTarget} has no link with the current map ${map.mapName}.\nAvailable links: ${JSON.stringify(map.links)}`)
+      return link.position
+    })
     completionTest = (target) => positionArrived(target) || getLocation().map === rawTarget
   } else {
     getTarget = (map) => <[number, number]>rawTarget
@@ -38,14 +38,15 @@ export const moveTo = (rawTarget: string | [number, number], client: Client) => 
   }
 
   return getMap(getLocation().map, client.mapConnection)
-    .then(map => new Promise(resolve => {
+    .then(map => new Promise((resolve, reject) => {
       const target = getTarget(map)
       async.until(
         () => completionTest(target),
         next => {
           getPath(target, map, client)
-          .then(path => move([path[0]], client))
-          .then(() => next())
+            .then(path => move([path[0]], client))
+            .then(() => next())
+            .catch(reject)
         },
         resolve,
       )
