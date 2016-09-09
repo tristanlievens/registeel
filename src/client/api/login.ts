@@ -1,5 +1,5 @@
 import { Client } from '../../typings'
-import { fireLoggingIn } from '../actions'
+import { fireLoggingIn } from '../modules/login'
 import { send } from '../utils/encryption'
 import { VERSION, HASH } from '../utils/constants'
 

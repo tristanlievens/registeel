@@ -2,8 +2,7 @@ import * as async from 'async'
 import { Client } from '../typings'
 import { getMap, Map } from '../client/api/map'
 import { move as moveApi } from '../client/api/move'
-import { LocationState } from '../client/reducers/location'
-import { direction } from '../client'
+import { LocationState, direction } from '../client/modules/location'
 import * as _ from 'lodash'
 
 export const move = (moves: direction[], client: Client) => {

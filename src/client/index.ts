@@ -11,8 +11,7 @@ const YELLOW_SERVER = '46.28.205.63'
 const HOST = BLUE_SERVER
 const PORT = 800
 
-export * from './actions'
-export * from './reducers'
+export * from './modules'
 
 export const start = () => (
   new Promise<Client>(resolve => {

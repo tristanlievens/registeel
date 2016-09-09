@@ -5,8 +5,11 @@ const map = {
   colliders: [
     [0, 1, 1, 0, 1],
     [0, 0, 0, 0, 1]
-  ]
+  ],
+  links: [],
+  npcs: [],
 }
+
 const locationState = { position: [0, 0] }
 const expectedPath: [number, number][] = [[0, 0], [0, 1], [1, 1], [2, 1], [3, 1], [3, 0]]
 

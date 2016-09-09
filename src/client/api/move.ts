@@ -1,11 +1,10 @@
-import * as locationActions from '../actions/location'
 import { Client } from '../../typings'
 import { send } from '../utils/encryption'
 import { getMap, Map } from './map'
-import { LocationState } from '../reducers/location'
+import { LocationState, position, direction, fireMove } from '../modules/location'
 import * as _ from 'lodash'
 
-export const move = (direction: locationActions.direction, client: Client): Promise<void> => {
+export const move = (direction: direction, client: Client): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (client.store.getState().location.map) resolve()
     else reject('Map is not loaded yet.')
@@ -16,7 +15,7 @@ export const move = (direction: locationActions.direction, client: Client): Prom
       if (!canMove(direction, location, map)) reject(`Not valid movement: ${direction} from ${location.position}`)
       execMove(direction, client)
       const destinationPosition = getDestinationPosition(direction, location, map)
-      client.store.dispatch(locationActions.fireMove(destinationPosition))
+      client.store.dispatch(fireMove(destinationPosition))
       resolve()
     }))
 }
@@ -27,7 +26,7 @@ export const move = (direction: locationActions.direction, client: Client): Prom
  * - handle ledges
  * - handle bridges
  */
-const canMove = (direction: locationActions.direction, location: LocationState, map: Map) => {
+const canMove = (direction: direction, location: LocationState, map: Map) => {
   const destinationPos = calculateNewPosition(location.position, direction)
   if (!insideBounds(destinationPos, map)) {
     console.log('not inside bounds')
@@ -45,7 +44,7 @@ const canMove = (direction: locationActions.direction, location: LocationState, 
   return true
 }
 
-const getDestinationPosition = (direction: locationActions.direction, location: LocationState, map: Map) => {
+const getDestinationPosition = (direction: direction, location: LocationState, map: Map) => {
   const tempDestinationPos = calculateNewPosition(location.position, direction)
   const destinationCollider = getCollider(tempDestinationPos, map)
   if (getCollider(tempDestinationPos, map) == 2) {
@@ -61,8 +60,8 @@ const insideBounds = (position: [number, number], map: Map) => (
   position[0] >= 0 && position[0] <= map.width && position[1] >= 0 && position[1] <= map.height
 )
 
-const calculateNewPosition = (oldPosition: locationActions.position, direction: locationActions.direction)
-  : locationActions.position => {
+const calculateNewPosition = (oldPosition: position, direction: direction)
+  : position => {
   switch (direction) {
     case 'up': return [oldPosition[0], oldPosition[1] - 1]
     case 'down': return [oldPosition[0], oldPosition[1] + 1]
@@ -72,7 +71,7 @@ const calculateNewPosition = (oldPosition: locationActions.position, direction: 
 }
 
 
-const execMove = (direction: locationActions.direction, client: Client) => {
+const execMove = (direction: direction, client: Client) => {
   let directionChar
   switch (direction) {
     case 'up': directionChar = 'u'; break

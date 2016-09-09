@@ -1,3 +1,10 @@
+import { Reducer } from 'redux'
+
+export const lastScriptReducer: Reducer<number> = (state: number = null, action: UpdateScriptAction) => {
+  if (action.type === 'UPDATE_SCRIPT') return action.scriptId
+  return state
+}
+
 export interface UpdateScriptAction {
   type: 'UPDATE_SCRIPT'
   scriptId: number

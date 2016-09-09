@@ -3,7 +3,7 @@ import * as devTools from 'remote-redux-devtools'
 import { persistStore, autoRehydrate, storages } from 'redux-persist'
 import * as _ from 'lodash'
 
-import { rootReducer, State } from './reducers'
+import { rootReducer, State } from './modules'
 
 const configureStore = (initialState?): Store<State> => {
   let enhancers

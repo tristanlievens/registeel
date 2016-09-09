@@ -1,7 +1,7 @@
-import * as locationActions from './actions/location'
-import * as loginActions from './actions/login'
-import { handleUpdateTeam } from './actions/team'
-import { handleUpdateScript } from './actions/lastScript'
+import * as locationActions from './modules/location'
+import * as loginActions from './modules/login'
+import { handleUpdateTeam } from './modules/team'
+import { handleUpdateScript } from './modules/lastScript'
 import { decrypt, send } from './utils/encryption'
 
 import { Store, Dispatch } from 'redux'

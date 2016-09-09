@@ -8,8 +8,8 @@
     "build": "rm -rf dist && tsc",
     "watch": "tsc --watch",
     "prepublish": "typings install && npm run build",
-    "test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js --timeout 5000 --require source-map-support/register",
-    "watch-test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js  -w --require source-map-support/register",
+    "test": "mocha 'dist/**/*.spec.js' --require source-map-support/register",
+    "watch-test": "NODE_ENV=test npm run build && mocha 'dist/**/*.spec.js'  -w --require source-map-support/register",
     "debug": "nodemon --require source-map-support/register dist/debug.js",
     "sniff": "node sniffer.js"
   },
