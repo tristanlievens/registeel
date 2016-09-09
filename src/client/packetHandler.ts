@@ -1,5 +1,6 @@
 import * as locationActions from './actions/location'
 import * as loginActions from './actions/login'
+import { handleUpdateTeam } from './actions/team'
 import { handleUpdateScript } from './actions/lastScript'
 import { decrypt, send } from './utils/encryption'
 
@@ -28,7 +29,7 @@ export const handlePacket = (packet: string, client: Client): void => {
     case 'R': client.store.dispatch(handleUpdateScript(rawPacketContent)); break
     case 'E': return // loadTime(rawPacketContent[0].split('|'))
     case 'd': return // loadInventory(rawPacketContent)
-    case '#': return // loadTeam(rawPacketContent[0].split('\r\n'))
+    case '#': client.store.dispatch(handleUpdateTeam(rawPacketContent[0])); break
     case 'S': return // syncLocation(rawPacketContent[0].split('|'))
     case "!": return // loadBattle(rawPacketContent[0].split('|'))
     case "a": return // updateBattleActions(rawPacketContent[0].split('|'))
